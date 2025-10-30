@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Music AI Application - Main Flask Application
 A music AI that evolves after use, creating songs, pictures, videos, lyrics, and artist names.

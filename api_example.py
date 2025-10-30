@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Example script demonstrating programmatic use of the Music AI Application API.
 
