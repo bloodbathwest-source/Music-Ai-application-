@@ -106,7 +106,12 @@ class MusicGenerator:
         
         # Save MIDI file
         import time as time_module
-        filename = f"song_{int(time_module.time())}_{genre}.mid"
+        import re
+        
+        # Sanitize genre to prevent path injection
+        safe_genre = re.sub(r'[^a-zA-Z0-9_-]', '', str(genre))
+        
+        filename = f"song_{int(time_module.time())}_{safe_genre}.mid"
         filepath = OUTPUT_DIR / filename
         
         with open(filepath, "wb") as output_file:

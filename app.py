@@ -104,9 +104,13 @@ def generate_content():
         })
         
     except Exception as e:
+        # Log the error internally but don't expose details to user
+        import logging
+        logging.error(f"Error generating content: {str(e)}")
+        
         return jsonify({
             'success': False,
-            'error': str(e)
+            'error': 'An error occurred while generating content. Please try again.'
         }), 500
 
 
@@ -131,13 +135,37 @@ def get_evolution_stats():
 @app.route('/output/<path:filename>')
 def serve_output(filename):
     """Serve generated output files."""
-    return send_from_directory(OUTPUT_DIR, filename)
+    # Sanitize filename to prevent path traversal attacks
+    import os
+    from werkzeug.utils import secure_filename
+    
+    # Remove any path components and ensure safe filename
+    safe_filename = secure_filename(filename)
+    
+    # Ensure the file is within OUTPUT_DIR
+    requested_path = (OUTPUT_DIR / safe_filename).resolve()
+    output_base = OUTPUT_DIR.resolve()
+    
+    # Check if the resolved path is within OUTPUT_DIR
+    try:
+        requested_path.relative_to(output_base)
+    except ValueError:
+        # Path is outside OUTPUT_DIR, reject
+        return jsonify({'error': 'Invalid file path'}), 400
+    
+    return send_from_directory(OUTPUT_DIR, safe_filename)
 
 
 def save_lyrics(lyrics, item_id):
     """Save lyrics to a text file."""
-    filename = f"lyrics_{item_id}.txt"
+    # Sanitize item_id to prevent path injection
+    import re
+    # Only allow alphanumeric, dash, and underscore
+    safe_item_id = re.sub(r'[^a-zA-Z0-9_-]', '', str(item_id))
+    
+    filename = f"lyrics_{safe_item_id}.txt"
     filepath = OUTPUT_DIR / filename
+    
     with open(filepath, 'w') as f:
         f.write(lyrics)
     return filename
@@ -155,4 +183,8 @@ if __name__ == '__main__':
     (OUTPUT_DIR / "images").mkdir(exist_ok=True)
     (OUTPUT_DIR / "videos").mkdir(exist_ok=True)
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Use debug mode only for development
+    # In production, set debug=False and use a proper WSGI server
+    import os
+    debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    app.run(debug=debug_mode, host='0.0.0.0', port=5000)
