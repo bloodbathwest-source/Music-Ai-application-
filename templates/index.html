@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music AI Application - Evolving Music Creator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 Music AI Application</h1>
+            <p class="subtitle">An evolving AI that creates music, art, lyrics, and more!</p>
+            <div class="evolution-badge">
+                <span>Evolution Score: <strong id="evolution-score">0</strong></span>
+            </div>
+        </header>
+
+        <main>
+            <section class="controls-section">
+                <h2>Create Your Music</h2>
+                
+                <div class="form-group">
+                    <label for="quantity">Quantity to Generate:</label>
+                    <input type="number" id="quantity" min="1" max="10" value="1">
+                </div>
+
+                <div class="form-group">
+                    <label>Content Types:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="content_type" value="song" checked> Song (MIDI)</label>
+                        <label><input type="checkbox" name="content_type" value="lyrics" checked> Lyrics</label>
+                        <label><input type="checkbox" name="content_type" value="artist" checked> Artist Name</label>
+                        <label><input type="checkbox" name="content_type" value="picture" checked> Album Art</label>
+                        <label><input type="checkbox" name="content_type" value="video"> Video (Placeholder)</label>
+                    </div>
+                </div>
+
+                <h3>Customization Options</h3>
+                
+                <div class="form-group">
+                    <label for="genre">Genre:</label>
+                    <select id="genre">
+                        <option value="pop">Pop</option>
+                        <option value="rock">Rock</option>
+                        <option value="jazz">Jazz</option>
+                        <option value="classical">Classical</option>
+                        <option value="electronic">Electronic</option>
+                        <option value="hip-hop">Hip-Hop</option>
+                        <option value="country">Country</option>
+                        <option value="blues">Blues</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="mood">Mood:</label>
+                    <select id="mood">
+                        <option value="happy">Happy</option>
+                        <option value="sad">Sad</option>
+                        <option value="energetic">Energetic</option>
+                        <option value="calm">Calm</option>
+                        <option value="romantic">Romantic</option>
+                        <option value="dark">Dark</option>
+                        <option value="uplifting">Uplifting</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tempo">Tempo:</label>
+                    <select id="tempo">
+                        <option value="slow">Slow</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="fast">Fast</option>
+                        <option value="variable">Variable</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="key">Musical Key:</label>
+                    <select id="key">
+                        <option value="C" selected>C</option>
+                        <option value="C#">C#</option>
+                        <option value="D">D</option>
+                        <option value="D#">D#</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="F#">F#</option>
+                        <option value="G">G</option>
+                        <option value="G#">G#</option>
+                        <option value="A">A</option>
+                        <option value="A#">A#</option>
+                        <option value="B">B</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="style">Style:</label>
+                    <select id="style">
+                        <option value="acoustic">Acoustic</option>
+                        <option value="electric">Electric</option>
+                        <option value="orchestral">Orchestral</option>
+                        <option value="synthetic">Synthetic</option>
+                        <option value="mixed">Mixed</option>
+                    </select>
+                </div>
+
+                <button id="generate-btn" class="generate-button">
+                    🎼 Generate Content
+                </button>
+
+                <div id="loading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Creating your music...</p>
+                </div>
+            </section>
+
+            <section class="results-section">
+                <h2>Generated Content</h2>
+                <div id="results" class="results-grid">
+                    <p class="placeholder-text">Your generated content will appear here...</p>
+                </div>
+            </section>
+
+            <section class="stats-section">
+                <h2>Evolution Statistics</h2>
+                <div id="stats" class="stats-grid">
+                    <div class="stat-card">
+                        <h4>Total Generations</h4>
+                        <p id="stat-total">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Preferred Genre</h4>
+                        <p id="stat-genre">-</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Preferred Mood</h4>
+                        <p id="stat-mood">-</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Evolution Level</h4>
+                        <p id="stat-evolution">0</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
