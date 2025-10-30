@@ -205,3 +205,11 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Music AI Application specific
+output/
+evolution_stats.json
+*.mid
+*.wav
+*.mp3
+*.mp4
