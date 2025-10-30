@@ -134,8 +134,22 @@ class ImageGenerator:
             pass  # Skip text if font issues
         
         # Save image
-        filename = f"art_{int(time.time())}_{genre}.png"
+        import re
+        # Sanitize genre to prevent path injection
+        safe_genre = re.sub(r'[^a-zA-Z0-9_-]', '', str(genre))
+        
+        filename = f"art_{int(time.time())}_{safe_genre}.png"
         filepath = OUTPUT_DIR / filename
+        
+        # Ensure we're writing within OUTPUT_DIR
+        filepath = filepath.resolve()
+        output_base = OUTPUT_DIR.resolve()
+        
+        try:
+            filepath.relative_to(output_base)
+        except ValueError:
+            raise ValueError("Invalid file path")
+        
         image.save(filepath, 'PNG')
         
         return f"images/{filename}"

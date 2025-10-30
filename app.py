@@ -159,14 +159,25 @@ def serve_output(filename):
 def save_lyrics(lyrics, item_id):
     """Save lyrics to a text file."""
     # Sanitize item_id to prevent path injection
+    from werkzeug.utils import secure_filename
     import re
+    
     # Only allow alphanumeric, dash, and underscore
     safe_item_id = re.sub(r'[^a-zA-Z0-9_-]', '', str(item_id))
     
-    filename = f"lyrics_{safe_item_id}.txt"
+    filename = secure_filename(f"lyrics_{safe_item_id}.txt")
     filepath = OUTPUT_DIR / filename
     
-    with open(filepath, 'w') as f:
+    # Ensure we're writing within OUTPUT_DIR
+    filepath = filepath.resolve()
+    output_base = OUTPUT_DIR.resolve()
+    
+    try:
+        filepath.relative_to(output_base)
+    except ValueError:
+        raise ValueError("Invalid file path")
+    
+    with open(filepath, 'w', encoding='utf-8') as f:
         f.write(lyrics)
     return filename
 

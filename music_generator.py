@@ -114,6 +114,15 @@ class MusicGenerator:
         filename = f"song_{int(time_module.time())}_{safe_genre}.mid"
         filepath = OUTPUT_DIR / filename
         
+        # Ensure we're writing within OUTPUT_DIR
+        filepath = filepath.resolve()
+        output_base = OUTPUT_DIR.resolve()
+        
+        try:
+            filepath.relative_to(output_base)
+        except ValueError:
+            raise ValueError("Invalid file path")
+        
         with open(filepath, "wb") as output_file:
             midi.writeFile(output_file)
         
